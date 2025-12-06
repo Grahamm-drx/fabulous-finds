@@ -5,7 +5,7 @@ session_start();
 // Variables for messages and form data
 $error = '';
 $success = '';
-$name = $email = $address = '';
+$name = $email = $address = $contact_no = '';
 
 // Process form when submitted
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -15,9 +15,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $password = $_POST['password'] ?? '';
     $confirm_password = $_POST['confirm_password'] ?? '';
     $address = $_POST['address'] ?? '';
+    $contact_no = $_POST['contact_no'] ?? '';
     
     // Validate user input
-    if (empty($name) || empty($email) || empty($password) || empty($confirm_password) || empty($address)) {
+    if (empty($name) || empty($email) || empty($password) || empty($confirm_password) || empty($address) || empty($contact_no)) {
         $error = 'All fields are required!';
     } elseif ($password !== $confirm_password) {
         $error = 'Passwords do not match!';
@@ -39,15 +40,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 $hashed_password = password_hash($password, PASSWORD_DEFAULT);
                 
                 // Insert new user into database
-                $stmt = $pdo->prepare("INSERT INTO user (Name, Email, Password, Address) VALUES (?, ?, ?, ?)");
-                $stmt->execute([$name, $email, $hashed_password, $address]);
+                $stmt = $pdo->prepare("INSERT INTO user (Name, Email, Password, Address, ContactNo) VALUES (?, ?, ?, ?, ?)");
+                $stmt->execute([$name, $email, $hashed_password, $address, $contact_no]);
                 
                 // Success message
                 $success = 'Registration successful! You can now login.';
                 
                 // Reset form fields after successful registration
                 if ($success) {
-                    $name = $email = $address = '';
+                    $name = $email = $address = $contact_no = '';
                 }
             }
             
@@ -107,6 +108,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 <div class="input-group">
                     <input type="email" id="email" name="email" required placeholder=" " value="<?php echo htmlspecialchars($email); ?>">
                     <label for="email"> Email Address </label>
+                    <span class="input-border"></span>
+                </div>
+
+                <!-- Contact Number input -->
+                <div class="input-group">
+                    <input type="tel" id="contact_no" name="contact_no" required placeholder=" " value="<?php echo htmlspecialchars($contact_no); ?>">
+                    <label for="contact_no"> Contact Number </label>
                     <span class="input-border"></span>
                 </div>
 
