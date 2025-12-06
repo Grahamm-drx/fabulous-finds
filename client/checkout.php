@@ -116,9 +116,6 @@ $payment_method = isset($_SESSION['payment_method']) ? $_SESSION['payment_method
           <option value="Paymaya" <?php if($payment_method==='Paymaya') echo 'selected'; ?>> PayMaya </option>
         </select>
 
-        <!-- Shipping address input -->
-        <textarea name="address" placeholder="Enter your complete shipping address" required><?php echo htmlspecialchars($address); ?></textarea>
-
         <!-- Hidden input to pass total amount -->
         <input type="hidden" name="total" value="<?php echo htmlspecialchars($total); ?>">
 

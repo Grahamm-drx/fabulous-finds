@@ -29,7 +29,8 @@ $sql = "
         p.image,
         od.Quantity,
         (p.Price * od.Quantity) as Total,
-        u.Address as shipping_address
+        u.Address as shipping_address,
+        u.ContactNo
     FROM orders o
     JOIN orderdetails od ON o.OrderID = od.OrderID
     JOIN product p ON od.ProductID = p.ProductID
@@ -126,6 +127,7 @@ $result = mysqli_query($conn, $sql);
                 <th> QUANTITY </th>
                 <th> TOTAL </th>
                 <th> SHIPPING ADDRESS </th>
+                <th> CONTACT NO </th>
                 <th> STATUS </th>
                 <th> ACTION </th>
             </tr>
@@ -154,6 +156,9 @@ $result = mysqli_query($conn, $sql);
                     
                     <!-- Shipping address -->
                     <td><?php echo $order['shipping_address']; ?></td>
+
+                    <!-- Contact Number -->
+                    <td><?php echo $order['ContactNo']; ?></td>
                     
                     <!-- Order status with color coding -->
                     <td>
