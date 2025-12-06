@@ -142,15 +142,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 <!-- Submit button with loading spinner -->
                 <button type="submit" class="submit-btn">
                     <span class="btn-text"> Create Account </span>
-                    <div class="btn-loader">
-                        <!-- Loading spinner SVG -->
-                        <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
-                            <circle cx="9" cy="9" r="7" stroke="currentColor" stroke-width="2" opacity="0.25"/>
-                            <path d="M16 9a7 7 0 01-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round">
-                            <animateTransform attributeName="transform" type="rotate" dur="1s" values="0 9 9;360 9 9" repeatCount="indefinite"/>
-                            </path>
-                        </svg>
-                    </div>
                 </button>
             </form>
 
