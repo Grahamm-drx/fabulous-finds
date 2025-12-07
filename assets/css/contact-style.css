@@ -8,7 +8,7 @@
   font-family: Arial, sans-serif;
 }
 
-/* =========== ROOT VARIABLES (SAME AS INDEX PAGE) =========== */
+/* =========== ROOT VARIABLES =========== */
 :root {
   --color-primary: #7380ec;
   --color-danger: #ff7782;
@@ -27,8 +27,6 @@
 body {
   background: var(--color-background);
   color: var(--color-dark);
-  margin: 0;
-  padding: 0;
 }
 
 /* =========================
@@ -234,15 +232,15 @@ label {
   color: var(--color-dark);
 }
 
-input,
-textarea {
+/* FIXED: Only apply these styles to form inputs in the contact form, NOT the search bar */
+.contact-form input,
+.contact-form textarea {
   width: 100%;
   padding: 12px;
   border-radius: 8px;
   border: 1px solid var(--color-info-light);
   font-size: 1rem;
   background: var(--color-background);
-  color: var(--color-dark);
 }
 
 .file-container {
