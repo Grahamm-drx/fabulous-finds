@@ -36,6 +36,7 @@ $sql = "
     JOIN product p ON od.ProductID = p.ProductID
     JOIN user u ON o.UserID = u.UserID
     WHERE o.UserID = $user_id
+    ORDER BY o.OrderID DESC 
 ";
 
 // Execute the query
@@ -183,12 +184,14 @@ $result = mysqli_query($conn, $sql);
                             <a href="complete.php?id=<?php echo $order['OrderID']; ?>" style="text-decoration: none;">
                                 <button class="cancel-btn"> Order Received </button>
                             </a>
-                        <?php elseif ($order['Status'] == 'Cancelled'): ?>
-                            <!-- Cancelled order indicator -->
-                            <span style="color: #a8a8a8;"> Cancelled </span>
+                        <?php elseif ($order['Status'] == 'Cancelled' || $order['Status'] == 'Completed'): ?>
+                            <!-- View Invoice link for completed/cancelled orders -->
+                            <a href="view_invoice.php?order_id=<?php echo $order['OrderID']; ?>" style="text-decoration: none;">
+                                <button class="cancel-btn" style="background: #2196f3;"> View Invoice </button>
+                            </a>
                         <?php else: ?>
-                            <!-- Completed order indicator -->
-                            <span style="color: #4caf50;"> Completed </span>
+                            <!-- Other status indicator -->
+                            <span style="color: #a8a8a8;"> <?php echo $order['Status']; ?> </span>
                         <?php endif; ?>
                     </td>
                 </tr>
