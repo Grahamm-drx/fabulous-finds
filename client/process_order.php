@@ -93,12 +93,11 @@ try {
         }
     }
 
-    // 4️⃣ Create Order
-    $orderID = (int) mysqli_fetch_assoc(mysqli_query($conn, "SELECT COALESCE(MAX(OrderID), 0) as max_id FROM orders"))['max_id'] + 1;
+    // Get the generated orderID
+    $orderID = mysqli_insert_id($conn);
 
-    if (!mysqli_query($conn, "INSERT INTO orders (OrderID, UserID, SellerID, OrderDate, Status) 
-                            VALUES ('$orderID', '$userID', '$sellerID', '$orderDate', 'Pending')")) {
-        throw new Exception("Error creating order: " . mysqli_error($conn));
+    if ($orderID == 0) {
+        throw new Exception("Failed to get order ID");
     }
 
     // 5️⃣ Insert all order items
