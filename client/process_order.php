@@ -101,13 +101,6 @@ try {
         throw new Exception("Error creating order: " . mysqli_error($conn));
     }
 
-    // Get the generated orderID
-    $orderID = mysqli_insert_id($conn);
-
-    if ($orderID == 0) {
-        throw new Exception("Failed to get order ID");
-    }
-
     // 5️⃣ Insert all order items
     foreach ($_SESSION['cart'] as $productID => $qty) {
         $productID = mysqli_real_escape_string($conn, $productID);
