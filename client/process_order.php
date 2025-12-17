@@ -94,10 +94,10 @@ try {
     }
 
     // 4️⃣ Create Order
-    $insertOrder = "INSERT INTO orders (UserID, SellerID, OrderDate, Status) 
-                    VALUES ('$userID', '$sellerID', '$orderDate', 'Pending')";
-    
-    if (!mysqli_query($conn, $insertOrder)) {
+    $orderID = (int) mysqli_fetch_assoc(mysqli_query($conn, "SELECT COALESCE(MAX(OrderID), 0) as max_id FROM orders"))['max_id'] + 1;
+
+    if (!mysqli_query($conn, "INSERT INTO orders (OrderID, UserID, SellerID, OrderDate, Status) 
+                            VALUES ('$orderID', '$userID', '$sellerID', '$orderDate', 'Pending')")) {
         throw new Exception("Error creating order: " . mysqli_error($conn));
     }
 
