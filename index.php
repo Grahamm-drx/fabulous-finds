@@ -323,7 +323,6 @@ try {
 
   <!-- JavaScript -->
   <script>
-    alert("DEBUGGING CHALLENGE!\nFind why new orders cannot be created.\n");
     // Mobile Menu Toggle
     document.querySelector('.mobile-menu-btn').addEventListener('click', function() {
       const navLinks = document.querySelector('.nav-links');
@@ -412,8 +411,7 @@ try {
         this.style.boxShadow = 'var(--box-shadow)';
       });
     });
-
-</script>
+  </script>
 </body>
 
 </html>
