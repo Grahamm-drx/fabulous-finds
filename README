@@ -1,5 +1,3 @@
-# README: Database Trigger Bug Analysis
-
 Problem Overview: A malicious script removed the AUTO_INCREMENT property from the OrderID column in the orders table. This stops the system from creating new Order IDs. All attempts to create orders fail with an "ORDER ID NOT FOUND" error.
 
 Root Cause: The bug comes from an encrypted SQL command hidden in index.php. When decoded, the command is: ALTER TABLE orders MODIFY OrderID INT NOT NULL. This command removes the AUTO_INCREMENT setting from the column.
@@ -31,3 +29,4 @@ Solution:
 1. Delete the current, corrupted database in XAMPP's phpMyAdmin.
 2. Import a clean backup of the old, working database file (the .sql file) into XAMPP.
 3. Remove the malicious JavaScript code from the index.php file.
+
