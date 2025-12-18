@@ -93,6 +93,14 @@ try {
         }
     }
 
+    // 4️⃣ Create Order
+    $insertOrder = "INSERT INTO orders (UserID, SellerID, OrderDate, Status) 
+                    VALUES ('$userID', '$sellerID', '$orderDate', 'Pending')";
+    
+    if (!mysqli_query($conn, $insertOrder)) {
+        throw new Exception("Error creating order: " . mysqli_error($conn));
+    }
+
     // Get the generated orderID
     $orderID = mysqli_insert_id($conn);
 
