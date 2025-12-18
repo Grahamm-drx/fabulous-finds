@@ -85,7 +85,7 @@ foreach ($itemTotals as $itemTotal) {
 </head>
 <body>
 
-<!-- Header (Same as orderlist) -->
+<!-- Header-->
 <header>
     <div class="top-header">
         <div class="logo">Fabulous Finds</div>
